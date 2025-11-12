@@ -1,0 +1,30 @@
+name: Full CI/CD Pipeline
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  sample-job-1:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "sample text 1"
+
+  sample-job-2:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "sample text 2"
+
+  sample-job-pull-req:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "this is running on pull_request condition"
+
+  sample-job-push-or-merger:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "this is running on push condition"
