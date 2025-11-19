@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: echo "env $API_KEY"
-      - run: echo "env ${{ API_KEY }}"
+      - run: echo "env ${{ vars.API_KEY }}"
       - run: echo "env $token1"
       - run: echo "env $token2"
     env:
