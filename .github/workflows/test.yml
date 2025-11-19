@@ -8,10 +8,7 @@ jobs:
   run-tests:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "env $API_KEY"
-      - run: echo "env ${{ vars.API_KEY }}"
-      - run: echo "env $token1"
-      - run: echo "env $token2"
+      - run: echo "env ${{ secrete.API_KEY }}"
+      - run: echo "env $token"
     env:
-      token1: $API_KEY
-      token2: ${{ vars.API_KEY }}
+      token: ${{ secrete.API_KEY }}
