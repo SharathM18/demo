@@ -1,27 +1,11 @@
-name: Manual Trigger With Inputs
+name: Tests
 
 on:
-  workflow_dispatch:
-    inputs:
-      message:
-        description: "Enter the message to print"
-        required: true
-        default: "Hello from GitHub Actions"
-      environment:
-        description: "Select environment"
-        required: true
-        type: choice
-        options:
-          - dev
-          - staging
-          - prod
+  push:
+    branches: ["main"]
 
 jobs:
-  mt:
+  run-tests:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Print inputs
-        run: |
-          echo "Message: ${{ github.event.inputs.message }}"
-          echo "Environment: ${{ github.event.inputs.environment }}"
+      - run: echo "Running tests..."
