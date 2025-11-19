@@ -4,11 +4,22 @@ on:
   push:
     branches: ["main"]
 
+env:
+  API_KEY1: ${{ secrets.API_KEY }}
+  API_KEY2: ${{ vars.API_KEY }}
+
 jobs:
   run-tests:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "env ${{ secrets.API_KEY }}"
-      - run: echo "env $token"
+      - run: echo "Global access of env $API_KEY1"
+      - run: echo "Global access of env $API_KEY2"
+
+      - run: echo "If API_KEY is a secrets, do this ${{ secrets.API_KEY }}"
+      - run: echo "If API_KEY is a secrets, do this $API_KEY3"
+
+      - run: echo "If API_KEY is a variable, do this ${{ vars.API_KEY }}"
+      - run: echo "If API_KEY is a variable, do this $API_KEY4"
     env:
-      token: ${{ secrets.API_KEY }}
+      API_KEY3: ${{ secrets.API_KEY }}
+      API_KEY4: ${{ vars.API_KEY }}
