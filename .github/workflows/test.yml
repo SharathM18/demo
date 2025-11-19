@@ -1,0 +1,11 @@
+name: Manual Trigger Only
+
+on:
+  workflow_dispatch: # Only manual trigger
+
+jobs:
+  mt:
+    runs-on: ubuntu-latest
+    steps:
+      - name: print
+        run: echo "Manual triggering"
