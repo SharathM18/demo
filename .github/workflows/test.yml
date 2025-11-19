@@ -1,25 +1,23 @@
-name: env
+name: env-best-practice
 
 on:
   push:
     branches: ["main"]
 
 env:
-  API_KEY1: ${{ secrets.API_KEY }}
-  API_KEY2: ${{ vars.API_KEY }}
+  GLOBAL_SECRET: ${{ secrets.API_KEY }} # secret -> safe in all steps
+  GLOBAL_VAR: ${{ vars.API_KEY }} # variable -> visible in logs
 
 jobs:
   run-tests:
     runs-on: ubuntu-latest
-    steps:
-      - run: echo "Global access of env $API_KEY1"
-      - run: echo "Global access of env $API_KEY2"
-
-      - run: echo "If API_KEY is a secrets, do this ${{ secrets.API_KEY }}"
-      - run: echo "If API_KEY is a secrets, do this $API_KEY3"
-
-      - run: echo "If API_KEY is a variable, do this ${{ vars.API_KEY }}"
-      - run: echo "If API_KEY is a variable, do this $API_KEY4"
     env:
-      API_KEY3: ${{ secrets.API_KEY }}
-      API_KEY4: ${{ vars.API_KEY }}
+      LOCAL_SECRET: ${{ secrets.API_KEY }}
+      LOCAL_VAR: ${{ vars.API_KEY }}
+    steps:
+      - name: env
+        run: |
+          echo "global secrets: $GLOBAL_SECRET"
+          echo "global variable: $GLOBAL_VAR"
+          echo "local secret: $LOCAL_SECRET"
+          echo "local variable: $LOCAL_VAR"
