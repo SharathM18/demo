@@ -1,11 +1,27 @@
-name: Manual Trigger Only
+name: Manual Trigger With Inputs
 
 on:
-  workflow_dispatch: # Only manual trigger
+  workflow_dispatch:
+    inputs:
+      message:
+        description: "Enter the message to print"
+        required: true
+        default: "Hello from GitHub Actions"
+      environment:
+        description: "Select environment"
+        required: true
+        type: choice
+        options:
+          - dev
+          - staging
+          - prod
 
 jobs:
   mt:
     runs-on: ubuntu-latest
+
     steps:
-      - name: print
-        run: echo "Manual triggering"
+      - name: Print inputs
+        run: |
+          echo "Message: ${{ github.event.inputs.message }}"
+          echo "Environment: ${{ github.event.inputs.environment }}"
