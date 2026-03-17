@@ -19,21 +19,21 @@ jobs:
 
     steps:
       - name: Checkout Source Code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6.0.2
         with:
           fetch-depth: 0
 
       - name: Run Gitleaks Scan
+        uses: gitleaks/gitleaks-action@v2.3.9
         id: gitleaks
-        uses: gitleaks/gitleaks-action@v2
         with:
-          args: --report-path=gitleaks-report.json
+          args: --report-path=gitleaks-report.json --redact
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        continue-on-error: true # Prevents the job from stopping before upload
+        continue-on-error: true
 
       - name: Upload Report to GitHub Artifacts
-        if: always() # Ensures the report is uploaded even if leaks are found
+        if: always() && steps.gitleaks.outcome != 'skipped'
         uses: actions/upload-artifact@v4
         with:
           name: gitleaks-security-report
