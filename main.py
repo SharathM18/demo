@@ -1,0 +1,3 @@
+print("hello world")
+AWS_KEY_TEST = "AKIAIMNO789ABCDEF012"
+print(AWS_KEY_TEST)

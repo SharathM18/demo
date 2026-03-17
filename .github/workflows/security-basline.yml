@@ -1,0 +1,47 @@
+name: Secret Detection Baseline
+
+on:
+  pull_request:
+    branches: ["main"]
+  push:
+    branches: ["main"]
+  # workflow_dispatch:
+  # schedule:
+  #   - cron: "0 4 * * *" # run once a day at 4 AM
+
+permissions:
+  contents: read
+
+jobs:
+  secret-scan:
+    name: Gitleaks Secret Scan
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run Gitleaks Scan
+        id: gitleaks
+        uses: gitleaks/gitleaks-action@v2
+        with:
+          args: --report-path=gitleaks-report.json --redact
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        continue-on-error: true # Prevents the job from stopping before upload
+
+      - name: Upload Report to GitHub Artifacts
+        if: always() # Ensures the report is uploaded even if leaks are found
+        uses: actions/upload-artifact@v4
+        with:
+          name: gitleaks-security-report
+          path: gitleaks-report.json
+          retention-days: 90
+
+      - name: Check for Failures
+        if: steps.gitleaks.outcome == 'failure'
+        run: |
+          echo "Gitleaks found secrets! Check the 'gitleaks-security-report' artifact."
+          exit 1
