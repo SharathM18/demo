@@ -27,7 +27,7 @@ jobs:
         id: gitleaks
         uses: gitleaks/gitleaks-action@v2
         with:
-          args: --report-path=gitleaks-report.json --redact
+          args: --report-path=gitleaks-report.json
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         continue-on-error: true # Prevents the job from stopping before upload
